@@ -11,11 +11,11 @@ public class LoginTest {
         
 
         // Initialize WebDriver
-        WebDriver driver =  ChromeDriver();
+        WebDriver driver =  new ChromeDriver();
 
        
             // Open the login page
-            driver.get("https://www.google.com/");
+            driver.get("");
 
             // Maximize the browser window
             driver.manage().window().maximize();
