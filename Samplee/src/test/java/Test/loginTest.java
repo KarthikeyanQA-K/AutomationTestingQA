@@ -14,7 +14,7 @@ public class loginTest {
 
 	       
 	            // Open the login page
-	            driver.get("https://www.google.com");
+	            driver.get("https://www.cflowapps.com/stage-signup/");
 
 	            // Maximize the browser window
 	            driver.manage().window().maximize();
