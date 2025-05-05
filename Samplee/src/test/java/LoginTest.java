@@ -11,7 +11,7 @@ public class LoginTest {
         
 
         // Initialize WebDriver
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver =  ChromeDriver();
 
        
             // Open the login page
