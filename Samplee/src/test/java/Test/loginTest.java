@@ -19,6 +19,7 @@ public class loginTest {
 	            // Maximize the browser window
 	            driver.manage().window().maximize();
 System.out.println("suuesss");
+System.out.println("suuesss");
 	    }
 	}
 
