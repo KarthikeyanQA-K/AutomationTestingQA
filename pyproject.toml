@@ -1,0 +1,105 @@
+[project]
+name = "cflow-playwright"
+version = "0.1.0"
+description = "CFLOW-Playwright Automation Project"
+readme = "README.md"
+requires-python = ">=3.13"
+
+dependencies = [
+
+    # =========================
+    # CORE TEST STACK
+    # =========================
+    "playwright==1.58.0",
+    "pytest==9.0.2",
+    "pytest-playwright==0.7.2",
+    "pytest-xdist==3.8.0",
+    "pytest-html==4.2.0",
+    "pytest-base-url==2.1.0",
+    "pytest-metadata==3.1.1",
+    "pytest-rerunfailures==16.1",
+    "pytest-dependency==0.6.0",
+    "pytest-json-report==1.5.0",
+
+    # =========================
+    # DATA + FILES
+    # =========================
+    "pandas==3.0.0",
+    "openpyxl==3.1.5",
+    "numpy==2.4.2",
+    "et-xmlfile==2.0.0",
+
+    # =========================
+    # PARSING / HTML
+    # =========================
+    "beautifulsoup4==4.14.3",
+    "soupsieve==2.8.3",
+
+    # =========================
+    # HTTP
+    # =========================
+    "requests==2.32.5",
+    "urllib3==2.6.3",
+    "certifi==2026.1.4",
+    "charset-normalizer==3.4.4",
+    "idna==3.11",
+
+    # =========================
+    # AWS
+    # =========================
+    "boto3==1.42.42",
+    "botocore==1.42.42",
+    "s3transfer==0.16.0",
+    "jmespath==1.1.0",
+
+    # =========================
+    # UTILITIES
+    # =========================
+    "python-dotenv==1.2.1",
+    "python-slugify==8.0.4",
+    "typing-extensions==4.15.0",
+    "pytz==2025.2",
+    "tzdata==2025.3",
+    "jinja2==3.1.6",
+    "markupsafe==3.0.3",
+    "packaging==26.0",
+    "six==1.17.0",
+    "colorama==0.4.6",
+
+    # =========================
+    # EMAIL AUTOMATION
+    # =========================
+    "imap-tools==1.11.1",
+    "imapclient==3.1.0",
+    "pyzmail36==1.0.5",
+
+    # =========================
+    # PLAYWRIGHT INTERNAL DEPS
+    # =========================
+    "greenlet==3.3.1",
+    "pyee==13.0.0",
+
+    # =========================
+    # TEST UTILITIES
+    # =========================
+    "attrs==25.4.0",
+    "pluggy==1.6.0",
+    "pygments==2.19.2",
+    "iniconfig==2.3.0",
+    "execnet==2.1.2",
+
+    # =========================
+    # DATE + TEXT HELPERS
+    # =========================
+    "python-dateutil==2.9.0.post0",
+    "text-unidecode==1.3",
+
+    # =========================
+    # TYPE STUBS
+    # =========================
+    "boto3-stubs==1.42.42",
+    "botocore-stubs==1.42.41",
+    "types-s3transfer==0.16.0",
+    "types-pytz==2025.2.0.20251108",
+    "types-awscrt==0.31.1"
+]

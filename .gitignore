@@ -1,0 +1,73 @@
+# =========================
+# Python / Pytest / Playwright
+# =========================
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# uv package manager
+.uv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest cache
+.pytest_cache/
+
+# Playwright specific
+playwright-report/
+test-results/
+report/
+*.zip
+blob-report/
+trace.zip
+trace/
+videos/
+screenshots/
+
+
+# Coverage files
+.coverage
+coverage.xml
+htmlcov/
+
+# JUnit logs
+junit-*.xml
+
+# Logs
+*.log
+logs/
+
+# Environment or secrets
+.env
+.env.*
+*.secret
+*.key
+config.yaml
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+
+# macOS / Windows / Linux ignores
+.DS_Store
+Thumbs.db
+
+# Node modules (if Playwright is used with npm at any point)
+node_modules/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+test_env.properties
+
+Reports

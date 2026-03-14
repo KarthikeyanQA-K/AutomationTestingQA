@@ -1,0 +1,170 @@
+version: 0.2
+
+phases:
+
+  install:
+    runtime-versions:
+      python: 3.11
+
+    commands:
+
+      - echo "Installing uv..."
+      - curl -LsSf https://astral.sh/uv/install.sh | sh
+      - export PATH="$HOME/.local/bin:$PATH"
+
+      - echo "Setting up virtual environment..."
+      - uv venv
+
+      - echo "Installing dependencies..."
+      - uv pip install pytest pytest-html pytest-json-report playwright boto3
+
+      - echo "Installing Playwright browsers..."
+      - uv run playwright install
+
+
+
+  build:
+    commands:
+
+      # =====================================================
+      # Ensure Reports directory
+      # =====================================================
+
+      - echo "Ensuring Reports directory exists..."
+      - mkdir -p Reports
+
+
+
+      # =====================================================
+      # Run tests (DO NOT STOP BUILD IF FAILED)
+      # =====================================================
+
+      - echo "Running tests..."
+
+      - |
+        set +e
+
+        uv run python run_tests.py
+        TEST_EXIT_CODE=$?
+
+        echo "Test Exit Code: $TEST_EXIT_CODE"
+
+        if [ $TEST_EXIT_CODE -eq 0 ]; then
+          export TEST_STATUS=PASSED
+        else
+          export TEST_STATUS=FAILED
+        fi
+
+        set -e
+
+
+
+      # =====================================================
+      # Load pytest metrics
+      # =====================================================
+
+      - echo "==== test_env.properties ===="
+
+      - |
+        export TOTAL_TESTS=N/A
+        export PASSED=N/A
+        export FAILED=N/A
+        export SKIPPED=N/A
+
+        if [ -f test_env.properties ]; then
+
+          echo "Found test_env.properties"
+
+          while IFS='=' read -r key value || [ -n "$key" ]; do
+
+            [[ -z "$key" || "$key" =~ ^# ]] && continue
+
+            if [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+              export "$key=$value"
+            fi
+
+          done < test_env.properties
+
+        else
+
+          echo "WARNING: test_env.properties not found"
+
+        fi
+
+
+      - echo "Loaded Metrics:"
+      - echo "TOTAL_TESTS=$TOTAL_TESTS"
+      - echo "PASSED=$PASSED"
+      - echo "FAILED=$FAILED"
+      - echo "SKIPPED=$SKIPPED"
+
+
+
+      # =====================================================
+      # Find latest report (SAFE)
+      # =====================================================
+
+      - echo "Finding latest HTML report..."
+
+      - |
+        LATEST_REPORT=$(ls -t Reports/*.html 2>/dev/null | head -1)
+
+        if [ -z "$LATEST_REPORT" ]; then
+
+          echo "WARNING: No HTML report found"
+
+        else
+
+          export HTML_REPORT_PATH="$LATEST_REPORT"
+
+          echo "Report found: $HTML_REPORT_PATH"
+
+        fi
+
+
+
+      # =====================================================
+      # Upload to S3 (SAFE)
+      # =====================================================
+
+      - echo "Uploading report to S3..."
+
+      - |
+        if [ -n "$HTML_REPORT_PATH" ]; then
+
+          REPORT_NAME=$(basename "$HTML_REPORT_PATH")
+
+          aws s3 cp "$HTML_REPORT_PATH" \
+          "s3://$S3_BUCKET/cflow-test-reports/$CODEBUILD_BUILD_ID/$REPORT_NAME" \
+          --region "$REGION"
+
+        else
+
+          echo "Skipping S3 upload (no report found)"
+
+        fi
+
+
+
+      # =====================================================
+      # Send email (ALWAYS RUN)
+      # =====================================================
+
+      - echo "Sending email..."
+
+      - |
+        set +e
+        uv run python send_email.py
+        set -e
+
+
+
+
+artifacts:
+
+  files:
+    - Reports/*.html
+
+  discard-paths: yes
+
+  base-directory: .
